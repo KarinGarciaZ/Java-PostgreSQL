@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package src;
 import java.sql.DriverManager;
 import java.sql.Connection;
@@ -49,23 +43,31 @@ public class Principal {
                             switch (opc2){
                                 case 1:
                                 {
-                                    System.out.print("\n1.- Id a insertar: ");
+                                    System.out.print("\nId a insertar: ");
                                     int id = leer.nextInt();
                                     
                                     leer.nextLine();
-                                    System.out.print("2.- Nombre a insertar: ");
+                                    System.out.print("Nombre a insertar: ");
                                     String nom = leer.nextLine();
-                                    PreparedStatement stmt = connection.prepareStatement("INSERT INTO public.\"Ciudades\"(id, nombre) VALUES (" + id + ",'" + nom + "')");
+                                    
+                                    System.out.print("Id Municipio a insertar: ");
+                                    int idM = leer.nextInt();
+                                    
+                                    System.out.print("Id Estado a insertar: ");
+                                    int idE = leer.nextInt();
+                                    
+                                    PreparedStatement stmt = connection.prepareStatement("INSERT INTO public.\"Ciudades\"(id, nombre, \"idMunicipio\", \"idEstado\") VALUES (" + id + ",'" + nom + "'," + idM + "," + idE + ")");
                                     stmt.executeUpdate();
                                     break;
                                 }
                                 case 2:
                                 {
                                     System.out.println("\n--------CONSULTA GENERAL---------");
-                                    PreparedStatement stmt = connection.prepareStatement("SELECT id, nombre FROM public.\"Ciudades\"");
+                                    PreparedStatement stmt = connection.prepareStatement("SELECT id, nombre, \"idMunicipio\", \"idEstado\" FROM public.\"Ciudades\"");
                                     ResultSet Rs = stmt.executeQuery();
+                                    System.out.println("ID Ciudad  ID Municipio  ID Estado  Nombre");
                                     while(Rs.next())
-                                        System.out.println(Rs.getInt(1) + "     " + Rs.getString(2));   
+                                        System.out.println("    " + Rs.getInt(1) + "            " + Rs.getInt(3) + "            " + Rs.getInt(4) + "      " +Rs.getString(2));   
                                     break;
                                 }
                                 case 3:
@@ -94,14 +96,20 @@ public class Principal {
                                     System.out.print("Id de elemento a modificar: ");
                                     int mod = leer.nextInt();   
                                     
-                                    System.out.print("1.- Id a insertar: ");
+                                    System.out.print("Id a insertar: ");
                                     int id = leer.nextInt();
                                                                         
                                     leer.nextLine();
-                                    System.out.print("2.- Nombre a insertar: ");
+                                    System.out.print("Nombre a insertar: ");
                                     String nom = leer.nextLine();
                                     
-                                    stmt = connection.prepareStatement("UPDATE public.\"Ciudades\" SET id=" + id + ", nombre='" + nom + "' WHERE id = " + mod + "");
+                                    System.out.print("Id Municipio a insertar: ");
+                                    int idM = leer.nextInt();
+                                    
+                                    System.out.print("Id Estado a insertar: ");
+                                    int idE = leer.nextInt();                                    
+                                    
+                                    stmt = connection.prepareStatement("UPDATE public.\"Ciudades\" SET id=" + id + ", nombre='" + nom + "' WHERE id = " + mod + ", \"idMunicipio\"=" + idM + ", \"idEstado\"= " + idE);
                                     stmt.executeUpdate();
                                     break;
                                 }
@@ -165,7 +173,7 @@ public class Principal {
                                     System.out.print("2.- Nombre a insertar: ");
                                     String nom = leer.nextLine();
                                     
-                                    stmt = connection.prepareStatement("UPDATE public.\"Municipios\" SET id=" + id + ", nombre='" + nom + "' WHERE id = " + mod + "");
+                                    stmt = connection.prepareStatement("UPDATE public.\"Municipios\" SET id=" + id + ", nombre='" + nom + "' WHERE id = " + mod);
                                     stmt.executeUpdate();
                                     break;
                                 }
@@ -229,7 +237,7 @@ public class Principal {
                                     System.out.print("2.- Nombre a insertar: ");
                                     String nom = leer.nextLine();
                                     
-                                    stmt = connection.prepareStatement("UPDATE public.\"Estados\" SET id=" + id + ", nombre='" + nom + "' WHERE id = " + mod + "");
+                                    stmt = connection.prepareStatement("UPDATE public.\"Estados\" SET id=" + id + ", nombre='" + nom + "' WHERE id = " + mod);
                                     stmt.executeUpdate();
                                     break;
                                 }
@@ -239,10 +247,8 @@ public class Principal {
                     }
                 }               
                                                 
-            }while(opc != 4);
-            
-            
-            
+            }while(opc != 4);          
+                        
         }catch (SQLException e) {
             System.out.println("Connection Failed! Check output console");
             e.printStackTrace();
